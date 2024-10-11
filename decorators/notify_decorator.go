@@ -4,12 +4,12 @@ type NotifyDecorator struct {
 	Notifier Notifier
 }
 
-func NewNotifyDecorator(notifyDecorator Notifier) *NotifyDecorator {
+func NewNotifyDecorator(notifier Notifier) *NotifyDecorator {
 	return &NotifyDecorator{
-		Notifier: notifyDecorator,
+		Notifier: notifier,
 	}
 }
 
-func (s *NotifyDecorator) Notify(message string) {
-	s.Notifier.Notify(message)
+func (s *NotifyDecorator) Notify(message string) error {
+	return s.Notifier.Notify(message)
 }

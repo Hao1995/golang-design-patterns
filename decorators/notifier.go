@@ -1,5 +1,5 @@
 package decorators
 
 type Notifier interface {
-	Notify(message string)
+	Notify(message string) error
 }

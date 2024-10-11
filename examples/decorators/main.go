@@ -1,11 +1,13 @@
 package main
 
 import (
-	"golang-design-patterns/decorators"
 	"log"
 
 	"github.com/joho/godotenv"
 	_ "github.com/joho/godotenv/autoload"
+
+	"golang-design-patterns/decorators"
+	"golang-design-patterns/services"
 )
 
 func init() {
@@ -18,7 +20,9 @@ func init() {
 func main() {
 
 	notifier := decorators.NewImplNotifier()
-	slackNotifyDecorator := decorators.NewSlackNotifyDecorator(notifier)
+
+	slackClient := services.NewSlackClientImpl()
+	slackNotifyDecorator := decorators.NewSlackNotifyDecorator(notifier, slackClient)
 
 	slackNotifyDecorator.Notify("Notification")
 }

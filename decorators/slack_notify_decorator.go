@@ -1,28 +1,26 @@
 package decorators
 
 import (
-	"log"
 	"os"
 
-	"github.com/slack-go/slack"
+	"golang-design-patterns/services"
 )
 
 type SlackNotifyDecorator struct {
 	NotifyDecorator
-	client *slack.Client
+	client services.SlackClient
 }
 
-func NewSlackNotifyDecorator(notifyDecorator Notifier) *SlackNotifyDecorator {
+func NewSlackNotifyDecorator(notifyDecorator Notifier, client services.SlackClient) *SlackNotifyDecorator {
 	return &SlackNotifyDecorator{
-		client:          slack.New(os.Getenv("SLACK_TOKEN")),
+		client:          client,
 		NotifyDecorator: *NewNotifyDecorator(notifyDecorator),
 	}
 }
 
-func (s *SlackNotifyDecorator) Notify(message string) {
-	_, _, _, err := s.client.SendMessage(os.Getenv("SLACK_CHANNEL"))
-	if err != nil {
-		log.Println(err.Error())
+func (s *SlackNotifyDecorator) Notify(message string) error {
+	if err := s.client.SendMessage(os.Getenv("SLACK_CHANNEL")); err != nil {
+		return err
 	}
-	s.Notifier.Notify(message)
+	return s.Notifier.Notify(message)
 }

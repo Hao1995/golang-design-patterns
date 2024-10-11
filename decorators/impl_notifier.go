@@ -11,6 +11,7 @@ func NewImplNotifier() *ImplNotifier {
 	return &ImplNotifier{}
 }
 
-func (s *ImplNotifier) Notify(message string) {
+func (s *ImplNotifier) Notify(message string) error {
 	log.Println(message)
+	return nil
 }
